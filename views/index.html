@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据采集</title>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<style>
+    body,
+    html {
+        height: 100%;
+    }
+
+    #app {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .wrap {
+        width: 500px;
+        margin: auto;
+    }
+
+    .martop20 {
+        margin-top: 20px;
+    }
+
+    .marauto {
+        align-self: center;
+        justify-self: center;
+        flex-basis: center;
+    }
+</style>
+
+<body>
+    <div id="app">
+        <div class="wrap">
+            <el-form ref="form" :model="formData" @submit.native.prevent label-width="120px">
+                <el-form-item label="采集类型">
+                    <el-checkbox-group v-model="formData.type">
+                        <el-checkbox label="TB">淘宝</el-checkbox>
+                        <el-checkbox label="JD">京东</el-checkbox>
+                    </el-checkbox-group>
+                </el-form-item>
+                <el-form-item label="采集关键字">
+                    <el-input v-model="formData.key" placeholder="请输入查询的关键字"></el-input>
+                </el-form-item>
+                <el-form-item label="采集页数">
+                    <el-input-number v-model="formData.num" :min="1" :precision="0" :step="1" :max="100">
+                    </el-input-number>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="open" class="marauto">开始</el-button>
+                </el-form-item>
+            </el-form>
+        </div>
+        <el-dialog
+            title="提示"
+            :visible.sync="dialogVisible"
+            width="30%">
+            <span>正在采集, 采集数据时请不要关闭正在采集数据的浏览器，关闭将会导致采集失败，查询完毕时将会自动打开浏览器，并导出数据, 10秒后将关闭此页面，此页面的关闭不会影响数据的采集</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+            </span>
+            </el-dialog>
+    </div>
+
+</body>
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data() {
+            return {
+                formData: {
+                    type: ['TB'],
+                    key: '相机',
+                    num: 100
+                },
+                dialogVisible: false
+            }
+        },
+        created() {
+            
+        },
+        methods: {
+            start() {
+                axios.post('/start', this.formData).then(res => {
+                    const data = res.data
+                    this.dialogVisible = true
+
+                    setTimeout( _ => {
+                        window.close()
+                    }, 10000)
+                })
+            },
+            open() {
+                const type = this.formData.type
+                if (type.includes('TB')) {
+                    this.$alert('采集淘宝时请确定已在浏览器上登录过账号，且已存在登录状态, 如果没有请先登录淘宝，然后ctrl + c 结束程序运行，并npm run start 重新运行程序', '提示', {
+                        confirmButtonText: '确定',
+                        distinguishCancelAndClose: true,
+                    }).then( _ => {
+                        this.start()
+                    })
+                } else {
+                    this.start()
+                }
+                
+            }
+        }
+    })
+</script>
+
+</html>

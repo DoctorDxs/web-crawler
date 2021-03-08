@@ -1,0 +1,35 @@
+{
+  "name": "web-crawler",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js TB JD",
+    "TB": "node app.js TB",
+    "JD": "node app.js JD",
+    "TBDetail": "node app.js TBDetail",
+    "JDDetail": "node app.js JDDetail",
+    "index": "nodemon main.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "chrome-paths": "^1.0.1",
+    "ejs": "^3.1.5",
+    "jquery": "^3.5.1",
+    "jsdom": "^16.4.0",
+    "koa": "^2.13.1",
+    "koa-bodyparser": "^4.3.0",
+    "koa-router": "^10.0.0",
+    "koa-views": "^7.0.0",
+    "nedb": "^1.8.0",
+    "nedb-promise": "^2.0.1",
+    "puppeteer": "^5.5.0",
+    "puppeteer-core": "^5.5.0",
+    "xlsx-writestream": "^0.5.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
